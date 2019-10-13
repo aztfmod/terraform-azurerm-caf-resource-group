@@ -5,8 +5,9 @@ Sets one or more resource groups, each of them in a specific Azure region.
 Reference the module to a specific version (recommended):
 ```hcl
 module "resource_groups" {
-    source                  = "git://github.com/aztfmod/resource_group.git?ref=v1.1"
-  
+    source  = "aztfmod/caf-resource-group/azurerm"
+    version = "0.1.1"
+    
     prefix                  = var.prefix
     resource_groups         = var.resource_groups
     tags                    = var.tags
