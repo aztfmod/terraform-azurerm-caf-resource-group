@@ -23,6 +23,5 @@ variable "prefix" {
 }
 
 variable "tags" {
-  description = "tags for the deployment"
-  default     = {}
+  description = "(Required) tags for the deployment"
 }
