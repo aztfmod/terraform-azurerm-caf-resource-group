@@ -11,7 +11,8 @@ variables:
   GOROOT: '$(Agent.BuildDirectory)/go' # Go installation path
   GOPATH: '$(system.defaultWorkingDirectory)/gopath' # Go workspace path
   GOBIN:  '$(GOPATH)/bin' # Go binaries path
-  modulePath: '$(GOPATH)/src/github.com/$(build.repository.name)'
+ # modulePath: '$(GOPATH)/src/github.com/$(build.repository.name)'
+  modulePath: '$(GOPATH)/src/github.com/demo_caf'
 steps:
 
 - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
