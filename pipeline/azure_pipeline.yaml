@@ -32,6 +32,7 @@ steps:
     echo '##vso[task.prependpath]$(GOBIN)'
     echo '##vso[task.prependpath]$(GOROOT)/bin'
     ls -laR
+    echo "adding extra test"
   displayName: 'Set up the Go workspace'
 
 - script: |
