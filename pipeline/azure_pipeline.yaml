@@ -8,17 +8,31 @@ pool:
   vmImage: 'Ubuntu 16.04'
 
 variables:
-  GOROOT: '$(Agent.BuildDirectory)/go' # Go installation path
-  GOPATH: '$(system.defaultWorkingDirectory)/gopath' # Go workspace path
-  GOBIN:  '$(GOPATH)/bin' # Go binaries path
- # modulePath: '$(GOPATH)/src/github.com/$(build.repository.name)'
-  modulePath: '$(GOPATH)/src/github.com/demo_caf'
+  - name: GOROOT
+    value: '$(Agent.BuildDirectory)/go' # Go installation path
+  - name: GOPATH
+    value: '$(system.defaultWorkingDirectory)/gopath' # Go workspace path
+  - name: GOBIN
+    value:  '$(GOPATH)/bin' # Go binaries path
+  - name: modulePath
+    value: '$(GOPATH)/src/github.com/$(build.repository.name)'
+  - group: azure_sandbox
 steps:
+
 
 - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
   inputs:
     terraformVersion: 0.12.6
   displayName: 'Use Terraform v0.12.6'
+
+- task: AzureCLI@2
+  displayName: Azure Login
+  inputs:
+    azureSubscription: azure_sandbox
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+        az account show
 
 - script: |
     wget "https://dl.google.com/go/go1.13.3.linux-amd64.tar.gz" --output-document "$(Agent.BuildDirectory)/go1.13.3.tar.gz"
@@ -29,10 +43,11 @@ steps:
     mkdir -p '$(GOBIN)'
     mkdir -p '$(GOPATH)/pkg'
     mkdir -p '$(modulePath)'
+    shopt -s extglob #using shopt to allow glob on the mv command
+    mv !(gopath) '$(modulePath)'
     echo '##vso[task.prependpath]$(GOBIN)'
     echo '##vso[task.prependpath]$(GOROOT)/bin'
     ls -laR
-    echo "adding extra test"
   displayName: 'Set up the Go workspace'
 
 - script: |
@@ -42,17 +57,21 @@ steps:
         curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
         dep ensure
     fi
-    go build -v ./cmd/strikes
   workingDirectory: '$(modulePath)/test'
   displayName: 'Get dependencies'
 
 - script: |
+    export ARM_CLIENT_ID="$(aksspn)"
+    export ARM_CLIENT_SECRET="$(aksspnsecret)"
+    export ARM_SUBSCRIPTION_ID="$(subscriptionid)"
+    export ARM_TENANT_ID="$(tenantid)"
     go get github.com/jstemmer/go-junit-report
-    go test -v 2>&1 | go-junit-report > report.xml
+    go test -v 1> test.json
+    go-junit-report < test.json > tfreport.xml
   workingDirectory: '$(modulePath)/test'
   displayName: 'Run unit test'
 
 - task: PublishTestResults@2
   inputs:
     testRunner: JUnit
-    testResultsFiles: $(System.DefaultWorkingDirectory)/**/report.xml
+    testResultsFiles: $(System.DefaultWorkingDirectory)/**/tfreport.xml
