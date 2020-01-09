@@ -6,19 +6,8 @@ Reference the module to a specific version (recommended):
 ```hcl
 module "resource_groups" {
     source  = "aztfmod/caf-resource-group/azurerm"
-    version = "0.1.1"
+    version = "0.x.y"
     
-    prefix                  = var.prefix
-    resource_groups         = var.resource_groups
-    tags                    = var.tags
-}
-```
-
-Or get the latest version
-```hcl
-module "resource_groups" {
-    source                  = "git://github.com/aztfmod/resource_group.git?ref=latest"
-  
     prefix                  = var.prefix
     resource_groups         = var.resource_groups
     tags                    = var.tags
@@ -79,53 +68,9 @@ resource "random_string" "prefix" {
 }
 ```
 
-# Output
-## object
-Returns the full set of created resource groups as a map, as follows:
-```hcl
-object = {
-  "apim" = {
-    "id" = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/tst-apim-demo"
-    "location" = "southeastasia"
-    "name" = "tst-apim-demo"
-    "tags" = {
-      "BusinessUnit" = "SHARED"
-      "DR" = "NON-DR-ENABLED"
-      "costCenter" = "1664"
-      "deploymentType" = "Terraform"
-      "environment" = "DEV"
-      "owner" = "Arnaud"
-    }
-  }
-  "networking" = {
-    "id" = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/tst-networking-demo"
-    "location" = "eastasia"
-    "name" = "tst-networking-demo"
-    "tags" = {
-      "BusinessUnit" = "SHARED"
-      "DR" = "NON-DR-ENABLED"
-      "costCenter" = "1664"
-      "deploymentType" = "Terraform"
-      "environment" = "DEV"
-      "owner" = "Arnaud"
-    }
-  }
-}
-```
-
-## names
-Kept for backward compatibility, might be removed in a future version.
-
-Returns a map of:
-- key   = key name (internal name) of the resource group
-- value = name of the resource group
-
-
-
-## ids
-Kept for backward compatibility, might be removed in a future version.
-
-Returns a map of:
-- key   = key name (internal name) of the resource group
-- value = id of the resource group
-
+# Outputs
+| Name | Type | Description | 
+| -- | -- | -- | 
+| object | object | Returns the full set of created resource groups as an object. |
+| names | map | Kept for backward compatibility, might be removed in a future version. Returns a map of: <br> key   = key name (internal name) of the resource group <br> value = name of the resource group |
+| ids | map | Kept for backward compatibility, might be removed in a future version. Returns a map of: <br> key   = key name (internal name) of the resource group <br> value = id of the resource group
