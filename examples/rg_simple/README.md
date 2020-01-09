@@ -1,4 +1,4 @@
-# rg-simple
+# rg_simple
 
 Creates a set of test resource groups. 
 

@@ -1,5 +1,5 @@
 
-module "rg-test" {
+module "rg_test" {
   source = "../../"
   
     prefix = local.prefix
