@@ -1,8 +1,6 @@
 name: Integration test on Azure
 
-on:
-  release:
-    types: [published]
+on: repository_dispatch
 jobs:
   deploy-to-azure:
     runs-on: ubuntu-latest
