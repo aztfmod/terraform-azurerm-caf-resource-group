@@ -5,6 +5,7 @@ jobs:
   deploy-to-azure:
     runs-on: ubuntu-latest
     container: 'aztfmod/rover:2001.2205'
+    options: --user 0
     steps:
     - uses: actions/checkout@v2
    # Authentication
