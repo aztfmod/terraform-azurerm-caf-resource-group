@@ -32,6 +32,8 @@ jobs:
       shell: bash
     - name: Terraform / Azure Integration test
       run: |
+        wget https://dl.google.com/go/go1.13.linux-amd64.tar.gz
+        tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
         cd test
         go get github.com/stretchr/testify
         go test
@@ -40,3 +42,4 @@ jobs:
         cd examples/rg_simple
         terraform destroy -no-color -auto-approve
       shell: bash
+      if: always()
