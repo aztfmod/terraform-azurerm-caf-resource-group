@@ -35,12 +35,12 @@ jobs:
         yum -y install wget
         wget https://dl.google.com/go/go1.13.linux-amd64.tar.gz
         tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
-        export PATH=$PATH:/usr/local/go/bin
         az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
         az account set --subscription $ARM_SUBSCRIPTION_ID
         az extension add --name resource-graph
     - name: Terraform / Azure Integration test
       run: |
+        export PATH=$PATH:/usr/local/go/bin
         cd test
         go get github.com/stretchr/testify
         go test
