@@ -37,6 +37,8 @@ jobs:
         tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
         export PATH=$PATH:/usr/local/go/bin
         cd test
+        az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
+        az account set --subscription $ARM_SUBSCRIPTION_ID
         go get github.com/stretchr/testify
         go test
     - name: Terraform destroy
