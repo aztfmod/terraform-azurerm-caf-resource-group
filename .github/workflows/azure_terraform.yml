@@ -14,23 +14,17 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS_2  }}
     - name: Terraform Validate
-      uses: azure/CLI@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          cd examples/rg_simple
-          terraform validte -no-color
+      run: |
+        cd examples/rg_simple
+        terraform validte -no-color
+      shell: bash
     - name: Terraform Plan
-      uses: azure/CLI@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          cd examples/rg_simple
-          terraform plan -no-color
+      run: |
+        cd examples/rg_simple
+        terraform plan -no-color
+      shell: bash
     - name: Terraform apply
-      uses: azure/CLI@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          cd examples/rg_simple
-          terraform apply -no-color -auto-approve
+      run: |
+        cd examples/rg_simple
+        terraform apply -no-color -auto-approve
+      shell: bash
