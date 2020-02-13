@@ -16,7 +16,7 @@ jobs:
     - name: Terraform Validate
       run: |
         cd examples/rg_simple
-        terraform validte -no-color
+        terraform validate -no-color
       shell: bash
     - name: Terraform Plan
       run: |
