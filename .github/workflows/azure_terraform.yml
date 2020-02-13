@@ -30,3 +30,13 @@ jobs:
         cd examples/rg_simple
         terraform apply -no-color -auto-approve
       shell: bash
+    - name: Terraform / Azure Integration test
+      run: |
+        cd test
+        go get github.com/stretchr/testify
+        go test
+    - name: Terraform destroy
+      run: |
+        cd examples/rg_simple
+        terraform destroy -no-color -auto-approve
+      shell: bash
