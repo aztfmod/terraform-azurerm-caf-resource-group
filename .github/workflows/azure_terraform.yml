@@ -1,6 +1,16 @@
 name: Integration test on Azure
 
-on: repository_dispatch
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the master branch
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  repository_dispatch
+
 env:
   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID  }}
   ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET  }}
