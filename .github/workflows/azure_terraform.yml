@@ -9,7 +9,8 @@ on:
   pull_request:
     branches:
       - master
-  repository_dispatch
+  repository_dispatch:
+  
 
 env:
   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID  }}
