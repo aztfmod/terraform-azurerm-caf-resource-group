@@ -11,12 +11,7 @@ on:
       - master
   repository_dispatch:
 
-
 env:
-  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID  }}
-  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET  }}
-  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID  }}
-  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID  }}
   AZURE_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET  }}
   AZURE_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID  }}
   AZURE_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID  }}
@@ -49,9 +44,6 @@ jobs:
       run: |
         curl -o go1.13.linux-amd64.tar.gz https://dl.google.com/go/go1.13.linux-amd64.tar.gz
         tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
-        az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
-        az account set --subscription $ARM_SUBSCRIPTION_ID
-        az extension add --name resource-graph
         sleep 30s
     - name: Terraform / Azure Integration test
       run: |
