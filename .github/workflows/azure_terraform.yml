@@ -1,0 +1,65 @@
+name: Integration test on Azure
+
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the master branch
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  repository_dispatch:
+
+env:
+  #Terraform Auth
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET  }}
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID  }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID  }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID  }}
+  #GO SDK Auth
+  AZURE_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET  }}
+  AZURE_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID  }}
+  AZURE_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID  }}
+  AZURE_TENANT_ID: ${{ secrets.ARM_TENANT_ID  }}
+jobs:
+  deploy-to-azure:
+    runs-on: ubuntu-latest
+    container:
+      image: 'aztfmod/rover:2001.2205'
+      options: --user 0
+    steps:
+    - uses: actions/checkout@v2
+    - name: Terraform Validate
+      run: |
+        cd examples/rg_simple
+        terraform init
+        terraform validate -no-color
+      shell: bash
+    - name: Terraform Plan
+      run: |
+        cd examples/rg_simple
+        terraform plan -no-color
+      shell: bash
+    - name: Terraform apply
+      run: |
+        cd examples/rg_simple
+        terraform apply -no-color -auto-approve
+      shell: bash
+    - name: Install tooling
+      run: |
+        curl -o go1.13.linux-amd64.tar.gz https://dl.google.com/go/go1.13.linux-amd64.tar.gz
+        tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
+        sleep 30s
+    - name: Terraform / Azure Integration test
+      run: |
+        export PATH=$PATH:/usr/local/go/bin
+        cd test
+        go get -t ./...
+        go test
+    - name: Terraform destroy
+      run: |
+        cd examples/rg_simple
+        terraform destroy -no-color -auto-approve
+      shell: bash
+      if: always()
