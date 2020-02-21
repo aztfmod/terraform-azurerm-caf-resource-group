@@ -10,7 +10,7 @@ on:
     branches:
       - master
   repository_dispatch:
-  
+
 
 env:
   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID  }}
@@ -43,18 +43,17 @@ jobs:
       shell: bash
     - name: Install tooling
       run: |
-        yum -y install wget
-        wget https://dl.google.com/go/go1.13.linux-amd64.tar.gz
+        curl -o go1.13.linux-amd64.tar.gz https://dl.google.com/go/go1.13.linux-amd64.tar.gz
         tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
         az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
         az account set --subscription $ARM_SUBSCRIPTION_ID
         az extension add --name resource-graph
-        sleep 69s
+        sleep 30s
     - name: Terraform / Azure Integration test
       run: |
         export PATH=$PATH:/usr/local/go/bin
         cd test
-        go get github.com/stretchr/testify
+        go get -t ./...
         go test
     - name: Terraform destroy
       run: |
