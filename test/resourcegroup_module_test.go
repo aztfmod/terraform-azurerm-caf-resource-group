@@ -2,38 +2,52 @@ package test_resource_group
 
 import (
 	"testing"
-	"os/exec"
+	"os"
 	"github.com/stretchr/testify/assert"
-	"strconv"
-	"strings"
+	"github.com/Azure/azure-sdk-for-go/services/resourcegraph/mgmt/2019-04-01/resourcegraph"
+	"context"
+	"github.com/Azure/go-autorest/autorest/azure/auth"
 )
 
 func TestNetworkingDemoResourceGroup(t *testing.T) {
 	t.Parallel()
+	//var query string = "ResourceContainers | where type =~ 'microsoft.resources/subscriptions/resourcegroups' | where name == 'test-apim-demo'| where tags['module'] =~'terraform-azurerm-caf-resource-group'" 
+	var query string = "ResourceContainers | where type =~ 'microsoft.resources/subscriptions/resourcegroups' | where name == 'test-apim-demo'| where tags['module'] =~'terraform-azurerm-caf-resource-group'" 
+	subscriptionID := os.Getenv("ARM_SUBSCRIPTION_ID")
 
-	out, err  := exec.Command("/bin/sh", "./scripts/az_rg_test_networking.sh" ).Output()
+	graphClient := resourcegraph.New()
+	authorizer, err := auth.NewAuthorizerFromEnvironment()
+	if err == nil {
+		graphClient.Authorizer = authorizer
+	}
+
+	queryRequest := new(resourcegraph.QueryRequest)
+	queryRequest.Query = &query
+	queryRequest.Subscriptions = &([]string{subscriptionID})
+	result, err := graphClient.Resources(context.Background(), *queryRequest)
 	if err != nil {
-		t.Error("UnitTest Failed")
+		t.Errorf("%+v\n", err)
 	}
-	output := string(out[:])
-	value, parseErr := strconv.Atoi(strings.TrimSpace(output))
-	if parseErr != nil {
-		t.Errorf("Unable to parse string to int %s", output)
-	}
-	assert.Equal(t, 1, value)
+	assert.Equal(t, int64(1), *result.Count)
 }
 
 func TestAPIMDemoResourceGroup(t *testing.T) {
 	t.Parallel()
+	var query string = "ResourceContainers | where type =~ 'microsoft.resources/subscriptions/resourcegroups' | where name == 'test-apim-demo'| where tags['module'] =~'terraform-azurerm-caf-resource-group'" 
+	subscriptionID := os.Getenv("ARM_SUBSCRIPTION_ID")
 
-	out, err  := exec.Command("/bin/sh", "./scripts/az_rg_test_apim.sh" ).Output()
+	graphClient := resourcegraph.New()
+	authorizer, err := auth.NewAuthorizerFromEnvironment()
+	if err == nil {
+		graphClient.Authorizer = authorizer
+	}
+
+	queryRequest := new(resourcegraph.QueryRequest)
+	queryRequest.Query = &query
+	queryRequest.Subscriptions = &([]string{subscriptionID})
+	result, err := graphClient.Resources(context.Background(), *queryRequest)
 	if err != nil {
-		t.Error("UnitTest Failed")
+		t.Errorf("%+v\n", err)
 	}
-	output := string(out[:])
-	value, parseErr := strconv.Atoi(strings.TrimSpace(output))
-	if parseErr != nil {
-		t.Errorf("Unable to parse string to int %s", output)
-	}
-	assert.Equal(t, 1, value)
+	assert.Equal(t, int64(1), *result.Count)
 }
