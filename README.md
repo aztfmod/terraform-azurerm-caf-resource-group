@@ -1,4 +1,4 @@
-[![Build status](https://dev.azure.com/azure-terraform/Blueprints/_apis/build/status/modules/resource_group)](https://dev.azure.com/azure-terraform/Blueprints/_build/latest?definitionId=5)
+![Integration test on Azure](https://github.com/aztfmod/terraform-azurerm-caf-resource-group/workflows/Integration%20test%20on%20Azure/badge.svg?branch=master)
 # Creates one or multiple resource groups
 Sets one or more resource groups, each of them in a specific Azure region.
 
