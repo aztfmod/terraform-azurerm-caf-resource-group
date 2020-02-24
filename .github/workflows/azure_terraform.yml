@@ -40,9 +40,9 @@ jobs:
       run: |
         curl -o go1.13.linux-amd64.tar.gz https://dl.google.com/go/go1.13.linux-amd64.tar.gz
         tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
-        echo ::set-env PATH=$PATH:/usr/local/go/bin
     - name: Terraform Plan + Unit Test
       run: |
+        export PATH=$PATH:/usr/local/go/bin
         cd examples/rg_simple
         terraform plan -no-color -out test.tfplan
         terraform show -json test.tfplan > tfplan.json
@@ -62,6 +62,7 @@ jobs:
         sleep 30s
     - name: Terraform / Azure Integration test
       run: |
+        export PATH=$PATH:/usr/local/go/bin
         cd test/integration
         go get -t ./...
         go test
