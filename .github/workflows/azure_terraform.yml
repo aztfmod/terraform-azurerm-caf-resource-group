@@ -40,13 +40,14 @@ jobs:
       run: |
         curl -o go1.13.linux-amd64.tar.gz https://dl.google.com/go/go1.13.linux-amd64.tar.gz
         tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
-        export PATH=$PATH:/usr/local/go/bin
+        echo ::set-env PATH=$PATH:/usr/local/go/bin
     - name: Terraform Plan + Unit Test
       run: |
         cd examples/rg_simple
         terraform plan -no-color -out test.tfplan
         terraform show -json test.tfplan > tfplan.json
         export JSON_PLAN_PATH="$(pwd)/tfplan.json"
+        echo ::set-env JSON_PLAN_PATH="$(pwd)/tfplan.json"
         cd ../../test/unit
         go get -t ./...
         go test |
