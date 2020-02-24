@@ -30,17 +30,17 @@ jobs:
       options: --user 0
     steps:
     - uses: actions/checkout@v2
-    - name: Install Go Tooling
-      run: |
-        curl -o go1.13.linux-amd64.tar.gz https://dl.google.com/go/go1.13.linux-amd64.tar.gz
-        tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
-        export PATH=$PATH:/usr/local/go/bin
     - name: Terraform Validate
       run: |
         cd examples/rg_simple
         terraform init
         terraform validate -no-color
       shell: bash
+    - name: Install Go Tooling
+      run: |
+        curl -o go1.13.linux-amd64.tar.gz https://dl.google.com/go/go1.13.linux-amd64.tar.gz
+        tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
+        export PATH=$PATH:/usr/local/go/bin
     - name: Terraform Plan + Unit Test
       run: |
         cd examples/rg_simple
