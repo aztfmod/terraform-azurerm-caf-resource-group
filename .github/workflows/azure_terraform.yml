@@ -50,7 +50,7 @@ jobs:
         echo ::set-env JSON_PLAN_PATH="$(pwd)/tfplan.json"
         cd ../../test/unit
         go get -t ./...
-        go test |
+        go test
       shell: bash
     - name: Terraform apply
       run: |
