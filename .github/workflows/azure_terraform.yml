@@ -30,6 +30,11 @@ jobs:
       options: --user 0
     steps:
     - uses: actions/checkout@v2
+    - name: Install Go Tooling
+      run: |
+        curl -o go1.13.linux-amd64.tar.gz https://dl.google.com/go/go1.13.linux-amd64.tar.gz
+        tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
+        export PATH=$PATH:/usr/local/go/bin
     - name: Terraform Validate
       run: |
         cd examples/rg_simple
@@ -42,7 +47,7 @@ jobs:
         terraform plan -no-color -out test.tfplan
         terraform show -json test.tfplan > tfplan.json
         export JSON_PLAN_PATH="$(pwd)/tfplan.json"
-        cd test/unit
+        cd ../../test/unit
         go get -t ./...
         go test |
       shell: bash
@@ -51,14 +56,11 @@ jobs:
         cd examples/rg_simple
         terraform apply -no-color -auto-approve -input-false test.tfplan
       shell: bash
-    - name: Install tooling
+    - name: Wait for Resource Graph index to be updated
       run: |
-        curl -o go1.13.linux-amd64.tar.gz https://dl.google.com/go/go1.13.linux-amd64.tar.gz
-        tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
         sleep 30s
     - name: Terraform / Azure Integration test
       run: |
-        export PATH=$PATH:/usr/local/go/bin
         cd test/integration
         go get -t ./...
         go test
