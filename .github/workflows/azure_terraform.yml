@@ -46,8 +46,8 @@ jobs:
         cd examples/rg_simple
         terraform plan -no-color -out test.tfplan
         terraform show -json test.tfplan > tfplan.json
-        export JSON_PLAN_PATH="$(pwd)/tfplan.json"
-        echo ::set-env JSON_PLAN_PATH="$(pwd)/tfplan.json"
+        export JSON_PLAN_PATH="/github/home/tfplan.json"
+        echo ::set-env JSON_PLAN_PATH="/github/home/tfplan.json"
         cd ../../test/unit
         go get -t ./...
         go test
@@ -55,8 +55,7 @@ jobs:
     - name: Terraform apply
       run: |
         cd examples/rg_simple
-        terraform apply -no-color -auto-approve test.tfplan
-      shell: bash
+        terraform apply -no-color -auto-approve /github/home/tfplan.json
     - name: Wait for Resource Graph index to be updated
       run: |
         sleep 30s
