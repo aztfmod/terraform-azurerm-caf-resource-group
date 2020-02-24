@@ -36,15 +36,20 @@ jobs:
         terraform init
         terraform validate -no-color
       shell: bash
-    - name: Terraform Plan
+    - name: Terraform Plan + Unit Test
       run: |
         cd examples/rg_simple
-        terraform plan -no-color
+        terraform plan -no-color -out test.tfplan
+        terraform show -json test.tfplan > tfplan.json
+        export JSON_PLAN_PATH="$(pwd)/tfplan.json"
+        cd test/unit
+        go get -t ./...
+        go test |
       shell: bash
     - name: Terraform apply
       run: |
         cd examples/rg_simple
-        terraform apply -no-color -auto-approve
+        terraform apply -no-color -auto-approve -input-false test.tfplan
       shell: bash
     - name: Install tooling
       run: |
@@ -54,7 +59,7 @@ jobs:
     - name: Terraform / Azure Integration test
       run: |
         export PATH=$PATH:/usr/local/go/bin
-        cd test
+        cd test/integration
         go get -t ./...
         go test
     - name: Terraform destroy
