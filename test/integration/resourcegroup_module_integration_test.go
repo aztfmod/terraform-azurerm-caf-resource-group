@@ -1,4 +1,4 @@
-package test_resource_group
+package integrationtest_resource_group
 
 import (
 	"testing"

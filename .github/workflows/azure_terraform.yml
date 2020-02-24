@@ -36,25 +36,33 @@ jobs:
         terraform init
         terraform validate -no-color
       shell: bash
-    - name: Terraform Plan
+    - name: Install Go Tooling
       run: |
+        curl -o go1.13.linux-amd64.tar.gz https://dl.google.com/go/go1.13.linux-amd64.tar.gz
+        tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
+    - name: Terraform Plan + Unit Test
+      run: |
+        export PATH=$PATH:/usr/local/go/bin
         cd examples/rg_simple
-        terraform plan -no-color
+        terraform plan -no-color -out /github/home/tfplan
+        terraform show -json /github/home/tfplan > /github/home/tfplan.json
+        export JSON_PLAN_PATH="/github/home/tfplan.json"
+        echo ::set-env JSON_PLAN_PATH="/github/home/tfplan.json"
+        cd ../../test/unit
+        go get -t ./...
+        go test
       shell: bash
     - name: Terraform apply
       run: |
         cd examples/rg_simple
-        terraform apply -no-color -auto-approve
-      shell: bash
-    - name: Install tooling
+        terraform apply -no-color -auto-approve /github/home/tfplan
+    - name: Wait for Resource Graph index to be updated
       run: |
-        curl -o go1.13.linux-amd64.tar.gz https://dl.google.com/go/go1.13.linux-amd64.tar.gz
-        tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
         sleep 30s
     - name: Terraform / Azure Integration test
       run: |
         export PATH=$PATH:/usr/local/go/bin
-        cd test
+        cd test/integration
         go get -t ./...
         go test
     - name: Terraform destroy
