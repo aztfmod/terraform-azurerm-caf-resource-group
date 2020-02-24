@@ -55,7 +55,7 @@ jobs:
     - name: Terraform apply
       run: |
         cd examples/rg_simple
-        terraform apply -no-color -auto-approve -input-false test.tfplan
+        terraform apply -no-color -auto-approve test.tfplan
       shell: bash
     - name: Wait for Resource Graph index to be updated
       run: |
