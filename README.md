@@ -74,3 +74,7 @@ resource "random_string" "prefix" {
 | object | object | Returns the full set of created resource groups as an object. |
 | names | map | Kept for backward compatibility, might be removed in a future version. Returns a map of: <br> key   = key name (internal name) of the resource group <br> value = name of the resource group |
 | ids | map | Kept for backward compatibility, might be removed in a future version. Returns a map of: <br> key   = key name (internal name) of the resource group <br> value = id of the resource group
+
+# Tests
+
+Test of module triggered upon push/pull request to ```master``` branch on GitHub.
