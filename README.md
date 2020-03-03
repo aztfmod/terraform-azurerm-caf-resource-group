@@ -78,3 +78,5 @@ resource "random_string" "prefix" {
 # Tests
 
 Test of module triggered upon push/pull request to ```master``` branch on GitHub.
+
+See ```.github/workflows/azure_terraform.yml```
