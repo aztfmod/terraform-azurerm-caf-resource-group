@@ -80,3 +80,7 @@ resource "random_string" "prefix" {
 Test of module triggered upon push/pull request to ```master``` branch on GitHub.
 
 See ```.github/workflows/azure_terraform.yml```
+
+# Reference
+
+[Introduction to Azure Cloud Adoption Framework landing zones for Terraform](https://github.com/azure/caf-terraform-landingzones)
