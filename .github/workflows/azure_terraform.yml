@@ -65,9 +65,3 @@ jobs:
         cd test/integration
         go get -t ./...
         go test
-    - name: Terraform destroy
-      run: |
-        cd examples/rg_simple
-        terraform destroy -no-color -auto-approve
-      shell: bash
-      if: always()
