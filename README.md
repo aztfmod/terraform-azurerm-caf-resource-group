@@ -1,6 +1,6 @@
 ![Integration test on Azure](https://github.com/aztfmod/terraform-azurerm-caf-resource-group/workflows/Integration%20test%20on%20Azure/badge.svg?branch=master)
 
-[![VScodespaces](https://img.shields.io/endpoint?url=https%3A%2F%2Faka.ms%2Fvso-badge)](https://online.visualstudio.com/environments/new?name=caf%20resource%20groupr&repo=aztfmod/terraform-azurerm-caf-resource-group)
+[![VScodespaces](https://img.shields.io/endpoint?url=https%3A%2F%2Faka.ms%2Fvso-badge)](https://online.visualstudio.com/environments/new?name=caf%20resource%20group&repo=aztfmod/terraform-azurerm-caf-resource-group)
 
 # Creates one or multiple resource groups
 Sets one or more resource groups, each of them in a specific Azure region.
