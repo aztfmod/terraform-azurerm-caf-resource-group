@@ -1,3 +1,20 @@
+# **READ ME**
+
+Thanks for your interest in Cloud Adoption Framework for Azure landing zones on Terraform.
+This module is now deprecated and no longer maintained. 
+
+As part of Cloud Adoption Framework landing zones for Terraform, we have migrated to a single module model, which you can find here: https://github.com/aztfmod/terraform-azurerm-caf and on the Terraform registry: https://registry.terraform.io/modules/aztfmod/caf/azurerm 
+
+In Terraform 0.13 you can now call directly submodules easily with the following syntax:
+```hcl
+module "caf_resource_group" {
+  source  = "aztfmod/caf/azurerm//modules/resource_group"
+  version = "0.4.18"
+  # insert the 4 required variables here
+}
+```
+
+
 ![Integration test on Azure](https://github.com/aztfmod/terraform-azurerm-caf-resource-group/workflows/Integration%20test%20on%20Azure/badge.svg?branch=master)
 # Creates one or multiple resource groups
 Sets one or more resource groups, each of them in a specific Azure region.
